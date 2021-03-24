@@ -15,10 +15,10 @@ session_start();
 |
 */
 
-Route::get('/', function () {
+Route::get('/login', function () {
     return view('login');
-});
-Route::post('/','App\Http\Controllers\CustommerController@login')->name('cus-log');
+})->name('login');
+//Route::post('/','App\Http\Controllers\CustommerController@login')->name('cus-log');
 
 Route::get('/welcome',function(){
     return view('welcome');
@@ -34,6 +34,21 @@ Route::get('/home', 'App\Http\Controllers\PostController@showAll')->name('all-po
 Route::get('/new', function () {
     return view('layouts/newPost');
 });
-
 Route::post('/new', 'App\Http\Controllers\PostController@store')->name('new-post');
+
+Route::get('/editview/{id}', 'App\Http\Controllers\PostController@viewUpdate')->name('view-edit');
+Route::post('/edit', 'App\Http\Controllers\PostController@update')->name('edit-post');
+
+Route::get('/delete', 'App\Http\Controllers\PostController@delete')->name('delete-post');
+
+Route::post('/log', 'App\Http\Controllers\AdminController@login')->name('admin-log');
+Route::get('/log', 'App\Http\Controllers\AdminController@logout')->name('log-out');
+
+Route::get('/sigup', function () {
+    return view('sigup');
+});
+Route::post('/sigup', 'App\Http\Controllers\AdminController@store')->name('sign-up');
+
+
+
 ?>

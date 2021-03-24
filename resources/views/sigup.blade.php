@@ -4,7 +4,7 @@
     <h4>{{session('err')}}</h4>    
 @endif
 
-<form method="POST" action={{ route('admin-log') }}>
+<form method="POST" action="{{route('sign-up')}}">
     {!! csrf_field() !!}
 
     <div>
@@ -12,7 +12,7 @@
         <input type="email" name="email" value="">
         @if ($errors->has('email'))
           <p class="help is-danger">{{ $errors->first('email') }}</p>
-        @endif
+       @endif
     </div>
 
     <div>
@@ -25,6 +25,6 @@
 
 
     <div>
-        <button type="submit">Login</button>
+        <button type="submit">Sign Up</button>
     </div>
 </form>

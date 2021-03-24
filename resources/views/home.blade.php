@@ -1,3 +1,7 @@
+@if (!empty(session('message')))
+    <h5>{{session('message')}}</h5>
+@endif
+
 <!DOCTYPE HTML>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -23,9 +27,16 @@
         </style>
     </head>
     <body>
-        <div>
-        <div class="row">
-            
+    
+        @if (!empty($_SESSION['admin']))
+            <a href="{{URL::route('new-post')}}" style="float:right; padding-right: 50px; padding-top:20px" >New Post</a>
+            <a href="{{URL::route('log-out')}}" style="float:right; padding-right: 50px; padding-top:20px" >Log out</a>
+        @else
+            <a href="{{URL::route('login')}}" style="float:right; padding-right: 50px; padding-top:20px" >login</a>
+        @endif
+        
+        <div style="padding-top: 100px; padding-left: 200px; padding-right: 200px">
+            <div class="row">
                 @foreach ($posts as $post)
                 <div class="col-md-4">
                     <div class="card mb-4 box-shadow">
@@ -34,14 +45,22 @@
                         src="{{asset("images/$post->image")}}" 
                         data-holder-rendered="true">
                         <label> {{$post->text}}</label>
-
+                        <a href="{{route('view-edit', ['id' => $post->id])}}">
+                            <button>
+                                Edit
+                            </button>
+                        </a>
+                        @if (!empty($_SESSION['admin']))
+                            <form method="get">
+                                {!! csrf_field() !!}
+                                <input type="hidden" name="id" value="{{$post->id}}">
+                                <button type="submit" formaction="{{route('delete-post')}}">Delete</button>
+                            </form>
+                        @endif
                     </div>
                 </div>
                 @endforeach
-                
-            
-            
-        </div>
+            </div>
         </div>
     </body>
 </HTML>

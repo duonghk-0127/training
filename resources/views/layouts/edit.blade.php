@@ -23,14 +23,14 @@
 </head>
 
 <body>
-    <h2 style="text-align: center">New Post</h2>
+    <h2 style="text-align: center">Edit Post</h2>
     <div >
         <div class="container">
             <div class="row" id="row_style">
                 <div class="col-lg-4   col-md-offset-4">
-                    <form method="POST" action={{ route('new-post') }} enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('edit-post') }}" enctype="multipart/form-data">
                         {!! csrf_field() !!}
-                        <textarea style="border:1px solid black;" name="text" cols="50" rows="5" placeholder="input here">{{ old('text')}} </textarea>
+                        <textarea style="border:1px solid black;" name="text" cols="50" rows="5" >{{ old('text', $post->text)}} </textarea>
                         @if ($errors->has('text'))
                             <p class="help is-danger">{{ $errors->first('text') }}</p>
                         @endif
@@ -38,7 +38,8 @@
                         @if ($errors->has('image'))
                             <p class="help is-danger">{{ $errors->first('image') }}</p>
                         @endif
-                        <button type="submit" class="btn btn-primary" id="submit" >Submit new post</button>
+                        <input type="hidden" name="id" value="{{$post->id}}">
+                        <button type="submit" class="btn btn-primary" id="submit" >Edit post</button>
                     </form>
                 </div>
             </div>

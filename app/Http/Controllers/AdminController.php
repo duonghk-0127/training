@@ -16,27 +16,30 @@ class AdminController extends Controller
 
         $hash = Hash::make($password);
 
-        Admin::created(['email'=>$email, 'password'=>$hash]);
-        $_SESSION['admin'] = $email;
+        Admin::create(['email'=>$email, 'password'=>$hash]);
 
-        return redirect('home')->with('message','You are logined');
+        return redirect('home')->with('message','You are Sigupped');
     }
 
     function login(StorePostRequest $request){
         $email = $request->email;
         $password = $request->password;
 
-        $admin = Admin::select('username','password')
+        $admin = Admin::select('email','password')
                             ->where([
                             ['email', '=' ,$email]
                             ])->get();
+        if(!empty($admin[0]->email) && Hash::check($password,$admin[0]->password) ){
+            $_SESSION['admin'] = $email;
 
-            if(!empty($admin[0]->username) && Hash::check($password,$admin[0]->password) ){
-                $_SESSION['admin'] = $email;
+            return redirect('/home')->with('message','You are logined');
+        }else{
+            return redirect('/login')->with('err','Login failed');
+        }
+    }
 
-                return redirect('/home')->with('message','You are logined');
-            }else{
-                return redirect('/login')->with('err','Login failed');
-            }
+    function logout(){
+        unset($_SESSION['admin']);
+        return back()->with('message','You are logouted');
     }
 }
